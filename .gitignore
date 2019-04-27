@@ -1,0 +1,16 @@
+#node_modules
+node_modules/
+
+# webstorm
+.idea/
+
+package-lock.json
+
+#logs & docs
+logs/
+
+#tests
+tests/
+
+# dist
+dist/

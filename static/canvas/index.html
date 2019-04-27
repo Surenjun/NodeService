@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="帅气">
+    <meta name="description" content="帅气">
+    <meta name="Author" content="帅气的苏某人">
+    <title>canvas画图</title>
+    <style>
+        body{font-family: 'Microsoft YaHei',serif}
+        body,dl,dd,h1,p,h2,h3,h4,h5,h6{margin:0}
+        ol,ul,li,a{margin:0;padding:0;list-style:none}
+        a{text-decoration: none}
+        img{border:none}
+        #img-box{
+            display: flex;
+            justify-content: center;
+            width: 550px;
+            height: 400px;
+            margin: 40px auto;
+        }
+        p{
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        footer{
+            width: 100%;
+            position: fixed;
+            bottom: 70px;
+        }
+        #colorBoxes{
+            display: flex;
+            align-items:center;
+            justify-content:center;
+        }
+        #colorBoxes div{
+            cursor: pointer;
+            width: 60px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+            text-align: center;
+            background-color: lightgray;
+            margin:auto;
+        }
+        #prev{
+            cursor: pointer;
+            width: 60px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+            text-align: center;
+            background-color: lightgray;
+            margin:10px auto;
+        }
+    </style>
+</head>
+    <body>
+        <div id="container">
+            <div id="prev">还原图片</div>
+            <p>拖拽图片至此</p>
+
+            <div id="img-box">
+                <canvas width="700" height="400" id="myCanvas" style="z-index: 999"></canvas>
+            </div>
+
+            <footer>
+                <div id="colorBoxes">
+                    <div>黑白</div>
+                    <div>反向</div>
+                    <div>去色</div>
+                    <div>单色</div>
+                    <div>高斯</div>
+                    <div>怀旧</div>
+                    <div>熔铸</div>
+                    <div>冰冻</div>
+                    <div>连环画</div>
+                    <div>褐色</div>
+                    <div>复古</div>
+                    <div>浮雕</div>
+                    <div>雾化</div>
+                    <div>毛玻璃</div>
+                    <div>马赛克</div>
+                </div>
+
+            </footer>
+        </div>
+    <script src="./canvas/color.js" type="text/javascript"/></script>
+    <script>
+        window.onload = function(){
+            const oCon = document.querySelector("#container"),
+                  oImg = document.querySelector("#img-box"),
+                  aBoxes = document.querySelector("#colorBoxes"),
+                  oP =  document.querySelector("p"),
+                  oPrev = document.querySelector("#prev");
+
+            const h = document.body.clientHeight || document.documentElement.clientHeight;
+
+            oCon.style.height = h + "px";
+
+            oImg.addEventListener("dragover",function (e) {
+                e.preventDefault();
+                oP.innerHTML = "放置图片";
+            });
+            let prevImage = null;
+            oImg.addEventListener("drop",function (e) {
+                e.preventDefault();
+                let data = e.dataTransfer.files[0];
+                for (let i = 0; i<data.length; i+=4) {
+                    let avg = Math.floor((data[i] + data[i+1] + data[i+2]) / 3);
+                    data[i] = avg;
+                    data[i+1] = avg;
+                    data[i+2] = avg;
+                }
+
+                if(!/image\/\w+/.test(data.type)) {
+                    alert("请确保文件类型为图像类型");
+                    return false;
+                }
+                oP.innerHTML = "";
+                const reader = new FileReader();
+                reader.readAsArrayBuffer(data);
+                reader.onload = function(){
+                    //	console.log(JSON.stringify(this.result) );
+                    const bf = this.result;
+                    const blob = new Blob([bf]);
+                    const str = URL.createObjectURL(blob);
+                    const img = document.createElement("img");
+                    img.src = str;
+
+                    img.onload = function(){
+                        oImg.style.backgroundColor = "#fff";
+                        prevImage = this;
+                        dragImg(this)
+                    }
+
+                };
+            });
+
+            const canvas = document.querySelector("#myCanvas");
+            const ctx = canvas.getContext('2d');
+            let [_width , _height ] = [null,null];
+            let imgData = null;
+
+            let dragImg = function (img) {
+
+                if(img.width < 550){
+                    _width = img.width;
+                    _height = img.height
+                }else{
+                    _width = 550;
+                    _height = 350;
+                }
+                ctx.drawImage(img,0,0, _width,_height);
+                imgData = ctx.getImageData(0,0, _width ,_height);
+            };
+            oPrev.onclick = function(){
+                if(prevImage){
+                    dragImg(prevImage)
+                }
+            };
+            aBoxes.addEventListener("click",function (e) {
+                const tar = e.target;
+                if(!tar.getAttribute("id")){
+                    const str = tar.innerHTML;
+                    if(!imgData){
+                        alert("上传图片！");
+                        return
+                    }
+                    changeColor( _width , _height , str  ,ctx ,imgData);
+                }
+
+            })
+        };
+    </script>
+    </body>
+</html>
