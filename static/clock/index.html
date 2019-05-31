@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="帅气">
+    <meta name="description" content="帅气">
+    <meta name="Author" content="帅气的苏某人">
+    <title>Title</title>
+</head>
+<style>
+    body{font-family: 'Microsoft YaHei',serif}
+    body,dl,dd,h1,p,h2,h3,h4,h5,h6{margin:0}
+    ol,ul,li,a{margin:0;padding:0;list-style:none}
+    a{text-decoration: none}
+    img{border:none}
+    #container{
+        position: relative;
+    }
+    #clock{
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width: 400px;
+        height: 620px;
+    }
+    .every-time{
+        display: flex;
+        float: left;
+        flex-direction: column;
+        width: 50px;
+    }
+    .every{
+        height: 60px;
+        background-size: 50px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .sign{
+        margin-top: 240px;
+        width: 20px;
+        background-image: url("./clock/img/sign.png");
+    }
+    .num-one{
+        background-image: url("./clock/img/shuzi1.png");
+    }
+    .num-two{
+        background-image: url("./clock/img/shuzi2.png");
+    }
+    .num-three{
+        background-image: url("./clock/img/shuzi3.png");
+    }
+    .num-four{
+        background-image: url("./clock/img/shuzi4.png");
+    }
+    .num-five{
+        background-image: url("./clock/img/shuzi5.png");
+    }
+    .num-six{
+        background-image: url("./clock/img/shuzi6.png");
+    }
+    .num-seven{
+        background-image: url("./clock/img/shuzi7.png");
+    }
+    .num-eight{
+        background-image: url("./clock/img/shuzi8.png");
+    }
+    .num-nine{
+        background-image: url("./clock/img/shuzi9.png");
+    }
+    .num-ten{
+        background-image: url("./clock/img/shuzi0.png");
+    }
+</style>
+<body>
+
+<div id="container">
+    <div id="clock">
+        <div class="every-time hour-one">
+
+            </div>
+        <div class="every-time hour-two">
+
+        </div>
+        <div class="every-time every sign"></div>
+        <div class="every-time min-one">
+
+        </div>
+        <div class="every-time min-two">
+
+        </div>
+        <div class="every-time every sign"></div>
+        <div class="every-time sec-one">
+
+        </div>
+        <div class="every-time sec-two">
+
+        </div>
+    </div>
+</div>
+    <script type="text/javascript" src="./clock.js" ></script>
+    <script>
+        const oC = document.querySelector("#container");
+        const HEIGHT = document.documentElement.clientHeight;
+        oC.style.height = HEIGHT + "px";
+
+        new Clock()
+
+    </script>
+    </body>
+</html>
