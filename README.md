@@ -7,5 +7,5 @@
 ![](/2.png)
 
 # Clock
-[在线打飞机](http://surenjun.com:100/clock)
+[时钟](http://surenjun.com:100/clock)
 ![](/3.png)
